@@ -1,42 +1,55 @@
 "use client";
 import React from "react";
 import Link from 'next/link';
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { FaArrowLeft, FaDatabase, FaServer, FaCodeBranch, FaShieldAlt } from 'react-icons/fa';
 import NeuralBackground from "../../components/NeuralBackground";
 
 const MetricCard = ({ title, value, icon: Icon, colorClass }: { title: string, value: string, icon: any, colorClass: string }) => {
-  const cardRef = React.useRef<HTMLDivElement>(null);
-  const [rotate, setRotate] = React.useState({ x: 0, y: 0 });
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const rotateX = (y - rect.height / 2) / 20;
-    const rotateY = (rect.width / 2 - x) / 20;
-    setRotate({ x: rotateX, y: rotateY });
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
   };
 
   return (
     <motion.div
-        ref={cardRef}
         onMouseMove={handleMouseMove}
-        onMouseLeave={() => setRotate({ x: 0, y: 0 })}
+        onMouseLeave={handleMouseLeave}
         style={{
+            rotateX,
+            rotateY,
             transformStyle: "preserve-3d",
-            transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
         }}
-        className="group relative glass-card p-8 rounded-[2.5rem] flex items-center justify-between transition-all duration-300 hover:border-[#0096FF]/50 overflow-hidden"
+        className="group relative glass-card p-8 rounded-[3rem] flex items-center justify-between border-white/5 overflow-hidden cursor-pointer"
     >
         <div className="absolute inset-0 bg-gradient-to-br from-[#0096FF]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-        <div style={{ transform: "translateZ(30px)" }} className="relative z-10">
-            <h2 className="text-xs font-mono font-bold text-gray-400 uppercase tracking-[0.2em] mb-3">{title}</h2>
-            <p className={`text-5xl font-black text-white ${colorClass} transition-colors`}>{value}</p>
+        <div style={{ transform: "translateZ(50px)" }} className="relative z-10">
+            <h2 className="text-[10px] font-mono font-black text-gray-400 uppercase tracking-[0.4em] mb-4">{title}</h2>
+            <p className={`text-6xl font-black text-white ${colorClass} transition-colors tracking-tighter`}>{value}</p>
         </div>
-        <div style={{ transform: "translateZ(60px)" }} className="opacity-20 group-hover:opacity-40 transition-opacity">
-            <Icon size={80} className="text-gray-500 group-hover:text-white transition-colors" />
+        <div style={{ transform: "translateZ(80px)" }} className="opacity-10 group-hover:opacity-30 transition-opacity group-hover:scale-110 duration-700">
+            <Icon size={100} className="text-gray-500 group-hover:text-white transition-colors" />
         </div>
     </motion.div>
   );
@@ -89,7 +102,5 @@ export default function DataDash() {
         </motion.div>
       </div>
     </div>
-  );
-}
   );
 }
