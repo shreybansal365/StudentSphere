@@ -87,13 +87,10 @@ const Footer: React.FC = () => {
 
         <div className="mt-16 pt-8 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center text-xs tracking-widest text-gray-600">
           <p>© {currentYear} MANIPAL UNIVERSITY JAIPUR. ALL RIGHTS RESERVED.</p>
-          <p className="mt-4 md:mt-0 font-medium">
-            MADE WITH <span className="text-red-500 animate-pulse">❤️</span> BY <span className="text-gray-300">SHREY BANSAL</span>
+          <p className="mt-4 md:mt-0 font-medium lowercase">
+            MADE WITH <span className="text-red-500 animate-pulse text-base">❤️</span> BY <span className="text-gray-300 uppercase">SHREY BANSAL</span>
           </p>
         </div>
-      </footer>
-    </div>
-                
       </footer>
     </div>
   );
