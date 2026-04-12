@@ -10,6 +10,7 @@ import Link from 'next/link';
 import NeuralBackground from "../components/NeuralBackground";
 import AttendanceCombat from "../components/AttendanceCombat";
 import GPAMatrix from "../components/GPAMatrix";
+import DiagnosticOnboarding from "../components/DiagnosticOnboarding";
 import { fetchStudentAcademicBundle } from "@/lib/student-data";
 import { buildAttendanceInsights } from "@/lib/academic";
 
@@ -119,6 +120,7 @@ const Page: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-white p-6 sm:px-12 relative overflow-hidden">
+      <DiagnosticOnboarding />
       <NeuralBackground />
       
       <div className="max-w-7xl mx-auto flex flex-col items-center relative z-10">

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaPlus, FaFilter, FaFire, FaClock, FaCheckCircle, FaUserGraduate } from "react-icons/fa";
+import { FaPlus, FaFilter, FaFire, FaClock, FaCheckCircle, FaUserGraduate, FaMicrophone, FaStop } from "react-icons/fa";
 import { db, auth } from "../../../lib/firebase";
 import { 
   collection, 
@@ -81,7 +81,26 @@ export default function StudentForum() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [filter, setFilter] = useState("ALL");
   const [isPosting, setIsPosting] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const [newPost, setNewPost] = useState({ title: "", content: "", category: "GENERAL" });
+
+  const startVoiceInput = () => {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert("VOICE_PROTOCOL_NOT_SUPPORTED_IN_THIS_GRID");
+      return;
+    }
+    const recognition = new (window as any).webkitSpeechRecognition();
+    recognition.continuous = false;
+    recognition.lang = 'en-US';
+    
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setNewPost(prev => ({ ...prev, content: prev.content + " " + transcript }));
+    };
+    recognition.start();
+  };
 
   useEffect(() => {
     const q = query(collection(db, "forum_posts"), orderBy("timestamp", "desc"));
@@ -183,13 +202,22 @@ export default function StudentForum() {
                          <option value="ACADEMICS">ACADEMICS</option>
                          <option value="EVENTS">EVENTS</option>
                       </select>
-                      <textarea 
-                        placeholder="INPUT_NEURAL_DATA_HERE..."
-                        rows={5}
-                        className="w-full bg-white/5 border border-white/10 p-4 rounded-xl font-mono text-sm focus:border-[#0096FF] outline-none transition-colors resize-none"
-                        value={newPost.content}
-                        onChange={(e) => setNewPost({...newPost, content: e.target.value})}
-                      />
+                      <div className="relative">
+                        <textarea 
+                          placeholder="INPUT_NEURAL_DATA_HERE..."
+                          rows={6}
+                          className="w-full bg-white/5 border border-white/10 p-5 rounded-2xl font-mono text-xs focus:border-[#0096FF] outline-none transition-all resize-none pr-16"
+                          value={newPost.content}
+                          onChange={(e) => setNewPost({...newPost, content: e.target.value})}
+                        />
+                        <button 
+                          type="button"
+                          onClick={startVoiceInput}
+                          className={`absolute bottom-6 right-6 p-4 rounded-xl transition-all ${isListening ? "bg-red-500 animate-pulse" : "bg-white/5 text-[#0096FF] hover:bg-[#0096FF]/10"}`}
+                        >
+                          {isListening ? <FaStop /> : <FaMicrophone />}
+                        </button>
+                      </div>
                       <div className="flex space-x-4">
                         <button type="submit" className="flex-1 py-4 bg-[#0096FF] text-black font-black rounded-full hover:shadow-[0_0_20px_rgba(0,150,255,0.4)] transition-all">PUBLISH_STREAM</button>
                         <button type="button" onClick={() => setIsPosting(false)} className="flex-1 py-4 glass-card font-black rounded-full hover:bg-red-500 transition-all">ABORT</button>
