@@ -18,97 +18,81 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <div className="bg-black text-gray-500">
-      <footer className="py-8 px-4">
-        <div className="grid md:grid-cols-3 grid-cols-1 items-center gap-6">
-          <div className="flex justify-center">
+    <div className="bg-black text-gray-500 border-t border-gray-800">
+      <footer className="py-12 px-6 md:px-12 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-12 items-center">
+          {/* Left Side: Logo & Statement */}
+          <div className="flex flex-col items-center md:items-start space-y-4">
             <img
               src="/muj.svg"
               alt="Manipal University Jaipur Logo"
-              className="h-16 w-auto bg-white p-2 rounded-lg object-contain cursor-pointer"
+              className="h-16 w-auto bg-white p-2 rounded-xl object-contain cursor-pointer hover:scale-105 transition-transform duration-300"
               onClick={handleMujLogoClick}
             />
+            <div className="text-center md:text-left">
+              <h2 className="text-xl font-bold text-white tracking-tight">
+                StudentSphere
+              </h2>
+              <p className="text-sm text-gray-400 max-w-xs mt-1">
+                The centralized academic nervous system for Manipal University Jaipur.
+              </p>
+            </div>
           </div>
 
-          <div className="text-center">
-            <h2 className="text-lg font-semibold text-gray-300">
-              Inspiring Connections, Amplifying Voices
-            </h2>
-            <p className="mt-2 text-sm">
-              Enabling impactful communication for Manipal University Jaipur.
-            </p>
-            <div className="mt-4">
-              <div className="flex items-center justify-center space-x-2">
-                <FaEnvelope className="text-gray-400" size={20} />
+          {/* Right Side: Connections & Socials */}
+          <div className="flex flex-col items-center md:items-end space-y-6">
+            <div className="text-center md:text-right">
+              <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-widest mb-3">
+                Connect with the Core
+              </h3>
+              <div className="flex flex-col items-center md:items-end space-y-2">
                 <a
-                  href="mailto:pr.council@muj.manipal.edu"
-                  className="text-gray-400 hover:text-white transition"
+                  href="mailto:shreybansal365@gmail.com"
+                  className="flex items-center text-gray-400 hover:text-[#0096FF] transition-colors group"
                 >
-                  studentsphere@muj.manipal.edu
+                  <FaEnvelope className="mr-3 group-hover:scale-110 transition-transform" size={18} />
+                  <span>shreybansal365@gmail.com</span>
                 </a>
-              </div>
-              <div className="flex items-center justify-center space-x-2 mt-2">
-                <FaPhone className="text-gray-400" size={20} />
                 <a
                   href="tel:+911413999100"
-                  className="text-gray-400 hover:text-white transition"
+                  className="flex items-center text-gray-400 hover:text-[#0096FF] transition-colors group"
                 >
-                  +91 141-3999100
+                  <FaPhone className="mr-3 group-hover:scale-110 transition-transform" size={18} />
+                  <span>+91 141-3999100</span>
                 </a>
               </div>
             </div>
-            <div className="flex justify-center mt-5 space-x-6">
-              <a
-                href="https://www.youtube.com/@MUJaipur"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:text-white transition"
-              >
-                <FaYoutube size={24} />
-              </a>
-              <a
-                href="https://www.facebook.com/manipal.university.jaipur/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:text-white transition"
-              >
-                <FaFacebookF size={24} />
-              </a>
-              <a
-                href="https://x.com/jaipur_manipal"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:text-white transition"
-              >
-                <FaTwitter size={24} />
-              </a>
-              <a
-                href="https://www.linkedin.com/school/manipal-university-jaipur/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:text-white transition"
-              >
-                <FaLinkedin size={24} />
-              </a>
-              <a
-                href="https://www.instagram.com/jaipurmanipal/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:text-white transition"
-              >
-                <FaInstagram size={24} />
-              </a>
+
+            <div className="flex space-x-5">
+              {[
+                { icon: FaYoutube, href: "https://www.youtube.com/@MUJaipur" },
+                { icon: FaFacebookF, href: "https://www.facebook.com/manipal.university.jaipur/" },
+                { icon: FaTwitter, href: "https://x.com/jaipur_manipal" },
+                { icon: FaLinkedin, href: "https://www.linkedin.com/school/manipal-university-jaipur/" },
+                { icon: FaInstagram, href: "https://www.instagram.com/jaipurmanipal/" }
+              ].map((social, i) => (
+                <a
+                  key={i}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-gray-900 p-3 rounded-full hover:bg-[#0096FF] hover:text-black transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  <social.icon size={20} />
+                </a>
+              ))}
             </div>
           </div>
-
-          <div className="hidden md:block">
-            {/* Placeholder for future MUJ secondary logo */}
-          </div>
         </div>
 
-        <div className="text-center text-sm mt-6">
-          <p>© {currentYear} Student Sphere, Manipal University Jaipur. All rights reserved.</p>
+        <div className="mt-16 pt-8 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center text-xs tracking-widest text-gray-600">
+          <p>© {currentYear} MANIPAL UNIVERSITY JAIPUR. ALL RIGHTS RESERVED.</p>
+          <p className="mt-4 md:mt-0 font-medium">
+            MADE WITH <span className="text-red-500 animate-pulse">❤️</span> BY <span className="text-gray-300">SHREY BANSAL</span>
+          </p>
         </div>
+      </footer>
+    </div>
                 
       </footer>
     </div>
