@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { FaEnvelope, FaInstagram } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaEnvelope, FaInstagram, FaGlobe, FaCogs, FaUsers, FaUniversity, FaHeadset } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 
 interface Contact {
@@ -33,67 +33,123 @@ const contacts: Record<string, Contact[]> = {
 };
 
 const tabs = [
-  { name: "Clubs & Organizations", id: "clubs" },
-  { name: "Administration", id: "admin" },
-  { name: "Support & Assistance", id: "support" },
+  { name: "CLUBS_MATRIX", id: "clubs", icon: FaUsers },
+  { name: "INSTITUTIONAL_ADMIN", id: "admin", icon: FaUniversity },
+  { name: "SUPPORT_UPLINK", id: "support", icon: FaHeadset },
 ];
 
 const ContactPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("clubs");
 
   return (
-    <div>
+    <div className="min-h-screen bg-black text-white font-mono selection:bg-[#0096FF] selection:text-black">
       <Navbar />
-      {/* 
-      <div className="relative min-h-screen bg-black flex flex-col text-white p-6">
-        <div className="max-w-4xl mx-auto w-full">
-          <h1 className="text-4xl font-extrabold text-[#0096FF] text-center mb-8">Contact Us</h1>
-          <div className="flex justify-center space-x-4 mb-6">
-            {tabs.map((tab) => (
+      
+      <main className="max-w-6xl mx-auto px-6 pt-32 pb-24">
+        {/* Header Telemetry */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-16"
+        >
+          <div className="flex items-center justify-center space-x-3 text-[#0096FF] mb-4">
+            <FaCogs className="animate-spin-slow" />
+            <span className="text-xs font-black tracking-[0.4em] uppercase">Communication_Uplink</span>
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter italic mb-4">
+            COMMUNICATIONS_<span className="text-[#0096FF]">MATRIX</span>
+          </h1>
+          <p className="text-gray-500 text-sm lowercase max-w-xl mx-auto">
+            accessing institutional directory. selecting the appropriate frequency for peer, administrative, or support inquiries.
+          </p>
+        </motion.div>
+
+        {/* Matrix Switcher */}
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            return (
               <button
                 key={tab.id}
-                className={`px-4 py-2 rounded-md text-sm md:text-base transition-all duration-300 ${
-                  activeTab === tab.id ? "bg-[#0096FF] text-black" : "bg-gray-700 hover:bg-gray-600"
-                }`}
                 onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center space-x-3 px-8 py-4 rounded-full border transition-all duration-300 uppercase tracking-widest text-[10px] font-black ${
+                  activeTab === tab.id 
+                    ? "bg-[#0096FF] text-black border-[#0096FF] shadow-[0_0_20px_#0096FF66]" 
+                    : "bg-white/5 text-gray-400 border-white/10 hover:border-white/20 hover:text-white"
+                }`}
               >
-                {tab.name}
+                <Icon />
+                <span>{tab.name}</span>
               </button>
-            ))}
-          </div>
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-gray-800 p-6 rounded-lg shadow-lg"
-          >
+            );
+          })}
+        </div>
+
+        {/* Data Node Grid */}
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <AnimatePresence mode="wait">
             {contacts[activeTab]?.map((contact: Contact, index) => (
-              <div key={index} className="mb-4 flex justify-between items-center border-b border-gray-600 pb-3">
-                <p className="text-lg font-semibold">{contact.name}</p>
-                <div className="flex space-x-3">
+              <motion.div
+                key={`${activeTab}-${index}`}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.05 }}
+                className="group glass-card bg-white/5 border border-white/10 p-8 rounded-[2rem] hover:border-[#0096FF]/30 transition-all duration-300 relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-[8px] text-gray-700 uppercase font-black">DIR_ENTRY_{index + 1}</span>
+                </div>
+
+                <h3 className="text-xl font-bold text-white mb-6 tracking-tight flex items-center gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#0096FF]"></div>
+                  {contact.name}
+                </h3>
+
+                <div className="space-y-4">
                   {contact.email && (
-                    <a href={`mailto:${contact.email}`} className="text-[#0096FF] hover:underline flex items-center">
-                      <FaEnvelope className="mr-2" /> Email
+                    <a 
+                      href={`mailto:${contact.email}`} 
+                      className="flex items-center space-x-3 text-sm text-gray-400 hover:text-[#0096FF] transition-colors font-sans"
+                    >
+                      <FaEnvelope className="text-[#0096FF]" />
+                      <span className="truncate">{contact.email}</span>
                     </a>
                   )}
                   {contact.instagram && (
-                    <a href={contact.instagram} target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:underline flex items-center">
-                      <FaInstagram className="mr-2" /> Instagram
+                    <a 
+                      href={contact.instagram} 
+                      target="_blank" 
+                      className="flex items-center space-x-3 text-sm text-gray-400 hover:text-pink-500 transition-colors font-sans"
+                    >
+                      <FaInstagram className="text-pink-500" />
+                      <span>Instagram Portal</span>
                     </a>
                   )}
                   {contact.link && (
-                    <a href={contact.link} target="_blank" rel="noopener noreferrer" className="text-green-400 hover:underline">
-                      Visit
+                    <a 
+                      href={contact.link} 
+                      target="_blank" 
+                      className="flex items-center space-x-3 text-sm text-gray-400 hover:text-green-500 transition-colors font-sans"
+                    >
+                      <FaGlobe className="text-green-500" />
+                      <span>Official Link</span>
                     </a>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </motion.div>
-        </div>
-      </div>
-      */}
+          </AnimatePresence>
+        </motion.div>
+      </main>
+
+      {/* Decorative Matrix Static */}
+      <div className="fixed bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#0096FF]/10 to-transparent"></div>
     </div>
   );
 };

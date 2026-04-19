@@ -60,7 +60,7 @@ const TerminalBoot: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className={`${i === bootMessages.length - 1 ? "text-[#0096FF]" : "text-gray-500"} text-xs lowercase tracking-wider`}
                 >
-                  <span className="mr-2 opacity-30">></span> {log}
+                  <span className="mr-2 opacity-30">&gt;</span> {log}
                 </motion.p>
               ))}
             </div>
