@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
             </div>
             <div className="text-center md:text-left">
               <h2 className="text-2xl font-black text-white tracking-tighter italic">
-                STUDENT <span className="text-[#0096FF]">SPHERE</span>
+                STUDENT<span className="text-[#0096FF]">SPHERE</span>
               </h2>
               <p className="text-xs font-mono text-gray-400 max-w-sm mt-3 leading-relaxed uppercase tracking-widest">
                 Centralized_Academic_Nervous_System.
