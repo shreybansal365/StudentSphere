@@ -9,7 +9,7 @@
   </p>
 
   <p align="center">
-    <a href="https://studentsphere1234.vercel.app/" target="_blank">
+    <a href="https://studentsphere-eta.vercel.app/" target="_blank">
       <img src="https://img.shields.io/badge/View_Platform-000000?style=for-the-badge&logoColor=white" alt="Deployment" />
     </a>
   </p>
